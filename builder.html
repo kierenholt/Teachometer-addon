@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+  <head> 
+    <base target="_top">
+    <?!= include('style'); ?>
+    <style>
+    
+    
+@media print {
+  body {
+    font-size: medium;
+  	font-family: serif;
+  }
+  div#scrolling {
+    padding: 5px;
+    margin-top: 0px;
+  }
+  .hideOnPrint {
+    visibility:hidden;
+    display: none;
+  }
+}
+
+
+@media screen {
+  body {
+    font-size: x-small;
+  }
+  #outputTable.builder input[type=text] {
+    width: 20px;
+    height: 10px;
+  }
+  div#scrolling {
+    padding-top: 70px;
+  }
+}
+
+
+.hideAlways {
+    visibility:hidden;
+    display: none;
+    }
+
+
+div.pageBreakBefore {
+  page-break-before: always;
+}
+
+div#getStarted {
+  font-size: medium;
+}
+
+/*** BUTTONS ***/
+      
+      
+div#logo {
+  margin: 0 0 0 auto;
+  float: right;
+  text-align: right;
+  clear: right;
+}
+
+img#logo {
+  display: block;
+  margin: 0 0 0 auto;
+  padding: 0 0 10px 0;
+  clear: both;
+}
+
+div#buttons {
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  width: 100%;  
+  background-color: #373748; 
+  height: 70px;
+}
+
+.dropbtn {
+  display: block;
+  clear: right;
+  float: left;
+  margin: 0 9px;
+  border: none;
+  cursor: pointer; 
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 29px;
+    right: -6px;
+    background-color: #373748;
+    overflow: auto;
+    text-align: right;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content p {
+    font-family: sans-serif;
+    font-size: medium;
+    color: white;
+    text-decoration: none;
+    display: block;
+    line-height: 2em;
+    padding: 0 5px;
+    margin: 0;
+}
+
+.dropdown-content p:hover {
+    background-color: #575768;
+    cursor: pointer;
+}
+
+.show {display: block;}
+
+/*** UPLOAD IN PROGRESS***/
+/* Opera and prob css3 final iteration */
+@keyframes blink {
+    0% {
+        opacity:1;
+    }
+    100% {
+        opacity:0;
+    }
+} 
+.blink-image {
+    animation: blink normal 1s infinite ease-in-out;
+    }
+
+    </style>
+<script>
+
+/*** DROP DOWN SCRIPT***/
+function startDropDown() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
+
+
+    
+  </head>
+  
+  <body>
+  
+
+
+      <div id="buttons" class="hideOnPrint">
+  
+        <img src='https://imgur.com/QyMWfOR.png' title='teachometer' id="logo" />
+        
+        <img src='https://imgur.com/RFeGVI4.png' title='add row from spreadsheet' class="dropbtn"  onClick='getRow();' />
+        <img src='https://imgur.com/G5wQ61o.png' id="uploadButton" title='upload lesson to website' class="dropbtn"  onClick="showUploadConfirmation()" />
+        <img src='https://imgur.com/RHggGCm.png' title='show lesson as presentation' class="dropbtn"  onClick='Slideshow();' />
+        <img src='https://imgur.com/u4392sA.png' title='print lesson' class="dropbtn"  onclick="printQuiz()" />
+        <img src='https://imgur.com/gbmpKI6.png' title='preview lesson as full size in a new browser tab' class="dropbtn"  onclick="preview()" />
+        <img src='https://imgur.com/LijOXGO.png' title='show settings dialog' class="dropbtn"  onclick="showSettings()" />
+        
+      <div class="dropdown">
+        <img src='https://imgur.com/rDQbqe8.png' onclick="startDropDown()" class="dropbtn"/>
+          <div id="myDropdown" class="dropdown-content">
+            <p onclick="window.assignment.deleteAll()">Clear</p>
+            <p onclick="onShuffleButton()">Shuffle</p>
+            <p onclick="window.assignment.truncate()">Truncate</p>
+          </div>
+      </div>
+      <span style="color:red" id="uploadToSiteErrorMessage"></span>
+        
+    </div>
+
+    <div id="scrolling">
+      <div id="questionsDiv" class="builder"></div>
+      
+      <div id="getStarted">
+      <h1>Getting started: How to create a lesson</h1>
+      <ol>
+      <li>Select some rows from the spreadsheet. They should contain lesson content written in markdown.
+      <li>Click the <img src='https://imgur.com/RFeGVI4.png' onClick='getRow();' /> icon to copy them into the lesson builder
+      <li>Click the <img src='https://imgur.com/G5wQ61o.png' onClick="checkSiteExistsThenUpload()" /> icon to upload the lesson to a website
+      <li>Direct students to the webpage and watch their marks pop up in the marksheet as they answer your questions 
+      </ol>
+      </div>
+      
+	  <div id="jumbledSolutionsDivContainer" class="hideAlways">
+		<h1>Jumbled solutions</h1>
+		<div id="jumbledSolutionsDiv"></div>
+	  </div>
+    
+      <div id="solutionsDiv" class="builder pageBreakBefore">
+            <h1>Solutions</h1>
+      </div>
+    </div>
+
+
+  
+    <?!= include('javascript'); ?>
+    <?!= include('acorn'); ?>
+    
+    
+<script>
+
+var EXPANSION_FACTOR = 3; //factor by which sites html is higher than equivalent assignment builder html
+            
+    var settings = {
+        //"user":"user", inserted later on
+        "questionsDiv": document.getElementById("questionsDiv"), 
+        "solutionsDiv": document.getElementById("solutionsDiv"),
+        "jumbledSolutionsDiv": document.getElementById("jumbledSolutionsDiv"),
+        "allowRowDelete" : true,
+        "allowGridlines": false,
+        "allowRefresh" : true,
+        "submitButtonText" : "check answers",
+        "showRowTitles": true,
+        "markbookUpdate": false,
+        "outOfOnlyQuestionsAttempted": true
+        };
+            
+		window.assignment = new AssignmentHTML(settings);
+            
+function onShuffleButton() {
+  window.assignment.shuffle(); 
+  window.assignment.updateQuestionNumbersAndMarkbookIndex();
+}
+
+function showSettings() {
+  google.script.run.showSettings(); 
+}
+
+function printQuiz() {
+  window.print();
+  window.assignment.refresh(); //REFRESH AFTER PRINT SO THAT IMAGES CAN LOAD IN TIME
+  //GET PRINT SETTINGS FROM API
+}
+
+function preview() {
+            
+    //PREVIEW MODE
+    var settings = {
+        //"user":"user", inserted later on 
+        "allowRowDelete" : false,
+        "allowGridlines": true,
+        "allowRefresh" : true,
+        "submitButtonText" : "check answers",
+        "showRowTitles": true,
+        "markbookUpdate": false
+        };
+
+  window.assignment.previewInNewWindow(settings); //window and questionsDiv are added to settings later
+  
+} 
+
+function getRow() {
+    var getStarted = document.getElementById("getStarted")
+    if (getStarted) {getStarted.parentElement.removeChild(getStarted);}
+    
+    google.script.run
+          .withSuccessHandler(
+            function(rowObject, element) { 
+              window.assignment.addRows(rowObject); 
+              window.assignment.scroll();
+              }
+            ).withFailureHandler(
+            function(error) {
+              google.script.run.showMessage("<p><br>The rows you have selected do not contain markdown, or the columns have not been correctly named. Possible solutions: <ul><li><a href='www.teachometer.co.uk./get-started.html' >Click here</a> to download a Google Sheet with lessons in the correct markdown format</li><li>Ensure row 1 of the sheet has the five column headers 'purpose','left content','right content','title','comment'</li></p>"
+              ,"Markdown not found");
+              }
+            ).getSelectedRows();
+}
+
+
+
+function Slideshow() {  
+      google.script.run
+            .withSuccessHandler(
+              function(revealHTML, element) {
+              var placeholder = "<section><section>slide data should be here</section></section>"; //do not change this without changing reveal.js
+              var start = revealHTML.search(placeholder);
+              var end = start + placeholder.length;
+              
+              var myWindow = window.open("", "slideshow", "");
+              myWindow.document.write(revealHTML.substring(0, start) + window.assignment.revealSections + revealHTML.substring(end));
+              }
+              ).getRevealHTML();
+}
+
+
+function showUploadConfirmation() {
+
+    var uploadData = {};
+    uploadData["rows"] = JSON.stringify(window.assignment.rows); 
+    uploadData["questionNumbers"] = window.assignment.questionNumbers; 
+    
+    //quiz name is added during the upload confirmation dialog
+    google.script.run
+          .withSuccessHandler(
+            ).withFailureHandler(
+            function(error) {
+                document.getElementById("uploadToSiteErrorMessage").innerHTML = error;
+            }
+            ).showUploadConfirmation(JSON.stringify(uploadData));
+}
+
+
+/*
+function postToClassroom(pageUrltitle) {
+              
+      //POST TO CLASSROOM
+      var postToClassroomId = document.getElementById("postToClassroomSelect").value;
+      if (postToClassroomId != "none" && pageUrltitle) {
+         google.script.run
+            .withSuccessHandler(
+              function(pageUrltitle) { 
+                    //document.getElementById("uploadToSiteErrorMessage").innerHTML = "";
+                }
+              ).withFailureHandler(
+              function(error) { 
+                  document.getElementById("uploadToSiteErrorMessage").innerHTML += error;
+                }
+              ).postAssignment(pageUrltitle,postToClassroomId);
+         }  
+}*/
+
+  </script>
+  
+  </body>
+</html>
+
+
+
+
+
+
+
+
+

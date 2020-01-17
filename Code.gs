@@ -1,27 +1,41 @@
-//POST API 
-//EXECUTES AS TEACHOMETER
-function doPost(e) {  
-  var data = e.parameter;
-  //UPDATE RESPONSES
-  if ("scores" in data) {
-    writeToSheet(data["markbookId"], data["sheetId"], data["user"], JSON.parse(data["scores"]));
-    return ContentService.createTextOutput("OK");
-  }
-  //NEW MARKSHEET
-  else if ("uploadDataString" in data) {
-    var ret = newMarksheet(data["uploadDataString"]);
-    return ContentService.createTextOutput(JSON.stringify(ret));
-  }
-  //GENERATE NEW MARKBOOK generateMarkbook(teacherID, sowID, sowName)
-  else if ("sowName" in data) {
-    var ret = getFile(data["teacherId"], data["sowId"], data["sowName"]);
-    return ContentService.createTextOutput(JSON.stringify(ret));
-  }
-  else {
-    //SEND SETTINGS
-    var settings = getMarkbookSettingsAndResponses(data["markbookId"],data["sheetId"],data["user"]);
-    return ContentService.createTextOutput(JSON.stringify(settings));
-  }
+
+function AMEUser() {
+  return "teachometer@gmail.com"; 
 }
 
+function onInstall() {
+  onOpen();
+}
 
+function onOpen() {
+  var menu = SpreadsheetApp.getUi().createAddonMenu();
+  menu.addItem("Lesson builder", "showSidebar").addToUi();  // Run the showSidebar function when someone clicks the menu
+  menu.addItem("Settings", "showSettings").addToUi();  // Run the showSidebar function when someone clicks the menu
+  
+  //menu.addItem("Homework checker", "showHomeworkChecker").addToUi();  
+}
+
+//assignment builder sidebar
+function showSidebar() {
+  var dialog = HtmlService.createTemplateFromFile("builder.html");
+  dialog.author = Session.getActiveUser().getEmail();
+  
+  var html = dialog.evaluate().setTitle("Lesson builder"); // The title shows in the sidebar
+  SpreadsheetApp.getUi().showSidebar(html);
+}
+
+//upload confirmation dialog
+function showUploadConfirmation(paramUploadDataString) {
+  var dialog = HtmlService.createTemplateFromFile("uploadConfirm.html");
+  dialog.uploadDataString = paramUploadDataString;
+  var html = dialog.evaluate().setWidth(600).setHeight(400).setTitle("upload"); // The title shows in the sidebar
+  SpreadsheetApp.getUi().showModalDialog(html, "upload");
+}
+
+function showMessage(html,title) {  
+  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html), title);
+}
+
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}

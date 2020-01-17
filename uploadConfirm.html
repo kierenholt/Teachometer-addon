@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+  </head>
+  <body onload="onLoad()">
+  
+  <div id="enterNameTopicDiv">
+    <h2>Enter the title of the lesson (e.g. Conservation of energy) or the date</h2> 
+    
+    <p>Title: <input type=text id="titleInput"  value="" /> <button id="uploadButton" onclick="uploadToSite()" >UPLOAD</button> 
+    <img id="loadingGif" src="https://i.imgur.com/ErfEUeJ.gif" style="height:32px;display:none"/>
+    </p>
+    <p id="uploadToSiteErrorMessage" style="color:red"></p> 
+    <p> <input type="checkbox" id="isTestModeCheckBox"/>Check to enable exam mode. this will shuffle the questions and apply a check limit of 1 </p>
+    
+  </div>
+  <div id="uploadSuccess" hidden>
+    <h1>Success!</h1>
+    <p>
+    The marksheet for your new lesson is <a id="uploadedMarksheetLink" href="" target="_blank">here</a>
+    <br>
+    The lesson page is <a id="uploadedLessonLink" href="" target="_blank">here</a>. 
+    You may wish to copy then send this link to your students
+    <br><br>
+    <input type="text" value="" id="uploadedLessonInput" />&nbsp;<button onclick="copyText()">Copy to Clipboard</button> 
+    </p>
+  </div>
+      
+  <script>
+
+
+  function onLoad() {
+    var d = new Date();
+    var options = {month: "long", day: "numeric", weekday: "long"};
+    document.getElementById("titleInput").value = d.toLocaleDateString("en-GB",options);
+    }
+    
+
+
+function uploadToSite() {
+    
+  var uploadDataString = <?=uploadDataString?>; //NO QUOTES!!
+  //alert("settingsString: "+settingsString);
+  var uploadDataObject = JSON.parse(uploadDataString);
+    //alert(JSON.stringify(uploadDataObject));
+  
+  if (document.getElementById("titleInput").value) {
+  
+    uploadDataObject["name"] = document.getElementById("titleInput").value; //name
+    uploadDataObject["isTestMode"] = document.getElementById("isTestModeCheckBox").checked; //isTestMode
+    document.getElementById("loadingGif").style.display = "inline";
+        
+    google.script.run
+          .withSuccessHandler(
+            function(ret, element) { //returns  [page.getUrl(),pageName,pageAlreadyExists];
+                if (ret != null) {
+                  document.getElementById("uploadToSiteErrorMessage").innerHTML = "";
+                  document.getElementById("loadingGif").style.display = "none";
+                  
+                  
+                  document.getElementById("uploadSuccess").hidden = false;
+                  document.getElementById("uploadedMarksheetLink").href = ret["marksheetUrl"];
+                  document.getElementById("uploadedLessonLink").href = ret["lessonUrl"];
+                  document.getElementById("uploadedLessonInput").value = ret["lessonUrl"];
+                  
+                }
+              }
+            ).withFailureHandler(
+            function(error) { 
+                document.getElementById("uploadToSiteErrorMessage").innerHTML = error;
+                  document.getElementById("loadingGif").style.display = "none";           
+                  }
+            ).upload(
+              uploadDataObject
+            );
+    } //end of if
+}
+
+
+function copyText() {
+  /* Get the text field */
+  var copyText = document.getElementById("uploadedLessonInput");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+}
+
+  </script>
+      
+  </body>
+</html>
+
+
