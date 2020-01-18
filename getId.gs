@@ -1,5 +1,4 @@
 function getTeacherId() {
-  
   var userProperties = PropertiesService.getUserProperties();
   var ret = userProperties.getProperty("teacherId");
   if (ret == null) {
@@ -13,5 +12,4 @@ function getTeacherId() {
 function resetTeacherId() {
   var userProperties = PropertiesService.getUserProperties();
   var ret = userProperties.deleteProperty("teacherId");
-  
 }

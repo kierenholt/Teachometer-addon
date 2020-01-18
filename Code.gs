@@ -17,9 +17,7 @@ function onOpen() {
 
 //assignment builder sidebar
 function showSidebar() {
-  var dialog = HtmlService.createTemplateFromFile("builder.html");
-  dialog.author = Session.getActiveUser().getEmail();
-  
+  var dialog = HtmlService.createTemplateFromFile("builder.html");  
   var html = dialog.evaluate().setTitle("Lesson builder"); // The title shows in the sidebar
   SpreadsheetApp.getUi().showSidebar(html);
 }
