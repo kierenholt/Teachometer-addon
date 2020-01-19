@@ -8,6 +8,9 @@ function showSettings() {
   //workbook
   dialog.markbookUrl = userProperties.getProperty(prefix + "markbookUrl");
   dialog.markbookName = userProperties.getProperty(prefix + "markbookName");
+  dialog.courseUrl = userProperties.getProperty(prefix + "courseUrl");
+  dialog.lessonUrl = userProperties.getProperty(prefix + "lessonUrl");
+  dialog.lessonName = userProperties.getProperty(prefix + "lessonName");
   
   //students
   dialog.studentNames = userProperties.getProperty(prefix + "studentNames");

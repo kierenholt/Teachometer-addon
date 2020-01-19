@@ -29,10 +29,13 @@ function upload(uploadDataObject) {
   Logger.log(dataString);
   var ret = JSON.parse(dataString);
   
-  //store markbook location for next time
+  //store for settings page
   userProperties.setProperty(prefix + "markbookId", ret["markbookId"]);
   userProperties.setProperty(prefix + "markbookUrl", ret["markbookUrl"]);
   userProperties.setProperty(prefix + "markbookName", ret["markbookName"]);
+  userProperties.setProperty(prefix + "lessonUrl", ret["lessonUrl"]);
+  userProperties.setProperty(prefix + "courseUrl", ret["courseUrl"]);
+  userProperties.setProperty(prefix + "lessonName", uploadDataObject["name"]);
   
   return ret;
 }

@@ -20,11 +20,12 @@
     <h1>Success!</h1>
     <p>
     The marksheet for your new lesson is <a id="uploadedMarksheetLink" href="" target="_blank">here</a>
-    <br>
-    The lesson page is <a id="uploadedLessonLink" href="" target="_blank">here</a>. 
-    You may wish to copy then send this link to your students
     <br><br>
-    <input type="text" value="" id="uploadedLessonInput" />&nbsp;<button onclick="copyText()">Copy to Clipboard</button> 
+    The lesson page is <a id="lessonUrlLink" href="" target="_blank">here</a>
+    <input type="text" value="" id="lessonUrlInput" style="width:1px; border: none"/>&nbsp;<button onclick="copyText('lessonUrlInput')">Copy Lesson Link</button> 
+    <br><br>
+    The course page is <a id="courseUrlLink" href="" target="_blank">here</a> 
+    <input type="text" value="" id="courseUrlInput" style="width:1px; border: none"/>&nbsp;<button onclick="copyText('courseUrlInput')">Copy Course Link</button> 
     </p>
   </div>
       
@@ -62,8 +63,12 @@ function uploadToSite() {
                   
                   document.getElementById("uploadSuccess").hidden = false;
                   document.getElementById("uploadedMarksheetLink").href = ret["marksheetUrl"];
-                  document.getElementById("uploadedLessonLink").href = ret["lessonUrl"];
-                  document.getElementById("uploadedLessonInput").value = ret["lessonUrl"];
+                  
+                  document.getElementById("lessonUrlLink").href = ret["lessonUrl"];
+                  document.getElementById("lessonUrlInput").value = ret["lessonUrl"];
+                  
+                  document.getElementById("courseUrlLink").href = ret["courseUrl"];
+                  document.getElementById("courseUrlInput").value = ret["courseUrl"];
                   
                 }
               }
@@ -79,15 +84,10 @@ function uploadToSite() {
 }
 
 
-function copyText() {
-  /* Get the text field */
-  var copyText = document.getElementById("uploadedLessonInput");
-
-  /* Select the text field */
+function copyText(id) {
+  var copyText = document.getElementById(id);
   copyText.select();
-  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-  /* Copy the text inside the text field */
+  copyText.setSelectionRange(0, 99999);
   document.execCommand("copy");
 }
 

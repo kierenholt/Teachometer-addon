@@ -17,7 +17,13 @@ div#updateWebsiteForm {
   </head>
   <body>
     
-
+    <h1>Most recently uploaded lesson and Course outline</h1>
+    <p>
+    <a href="<?=courseUrl?>" target="_blank">Course outline (links to previous lessons)</a>
+    <br>
+    <a href="<?=lessonUrl?>" target="_blank">Most recently uploaded lesson: <?=lessonName?></a>
+    
+    </p>
     
     <h1>When I click Print</h1>
     <?!= settingToHTMLElement(getSettings(["print-show-solutions","print-jumbled-solutions","print-show-titles","print-every-question-new-page"],false)) ?>
@@ -28,11 +34,7 @@ div#updateWebsiteForm {
     <a id="markbookUrlLink" href="<?= markbookUrl ?>" target="_blank">
       <p>Google workbook <span  id="markbookNameSpan"><?= markbookName ?></span></p>
     </a>
-    <!---
-    <button class="blue" onClick='generateMarkbook();'>Generate a new markbook</button> 
-    <img id="loadingGif" src="https://i.imgur.com/ErfEUeJ.gif" style="height:32px;display:none"/>
-    <span style="color:red" id="generateMarkbookErrorMessage"></span>
-    --->
+    
     
     <h1>Marksheet score columns</h1>
     <p>These are score columns that will be used in the marking sheet when the quiz is first made. More columns can also be created after the quiz is made.<br>
