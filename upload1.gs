@@ -18,6 +18,7 @@ function upload(uploadDataObject) {
  
   Logger.log(JSON.stringify(uploadDataObject));
   var data = {
+    "action" : "uploadLesson",
     "uploadDataString" : JSON.stringify(uploadDataObject) //this is how it likes to be used. it doesnt like strings for data or arrays for properties
   };
   var options = {

@@ -284,9 +284,8 @@ function getRow() {
               }
             ).withFailureHandler(
             function(error) {
-              google.script.run.showMessage("<p><br>The rows you have selected do not contain markdown, or the columns have not been correctly named. Possible solutions: <ul><li><a href='www.teachometer.co.uk./get-started.html' >Click here</a> to download a Google Sheet with lessons in the correct markdown format</li><li>Ensure row 1 of the sheet has the five column headers 'purpose','left content','right content','title','comment'</li></p>"
-              ,"Markdown not found");
-              }
+              google.script.run.showMessage("<p>"+error+"</p>","error");
+            }
             ).getSelectedRows();
 }
 
@@ -309,18 +308,22 @@ function Slideshow() {
 
 function showUploadConfirmation() {
 
-    var uploadData = {};
-    uploadData["rows"] = JSON.stringify(window.assignment.rows); 
-    uploadData["questionNumbers"] = window.assignment.questionNumbers; 
-    
-    //quiz name is added during the upload confirmation dialog
-    google.script.run
-          .withSuccessHandler(
-            ).withFailureHandler(
-            function(error) {
-                document.getElementById("uploadToSiteErrorMessage").innerHTML = error;
-            }
-            ).showUploadConfirmation(JSON.stringify(uploadData));
+  if (window.assignment.rows.length == 0) {
+    google.script.run.showMessage("<h2>You cannot upload an empty lesson>/h2><p>Your lesson contains no content e.g. notes or questions. <br> To fix this: <ul><li>Select rows from the Google Sheet <li>  Click the + icon to add markdown into the lesson.</ul></p>","cannot upload empty lesson");
+    return;
+  }
+  var uploadData = {};
+  uploadData["rows"] = JSON.stringify(window.assignment.rows); 
+  uploadData["questionNumbers"] = window.assignment.questionNumbers; 
+  
+  //quiz name is added during the upload confirmation dialog
+  google.script.run
+        .withSuccessHandler(
+          ).withFailureHandler(
+          function(error) {
+              google.script.run.showMessage("<p>"+error+"</p>","error");
+          }
+          ).showUploadConfirmation(JSON.stringify(uploadData));
 }
 
 

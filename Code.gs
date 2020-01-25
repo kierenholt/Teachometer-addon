@@ -1,8 +1,4 @@
 
-function AMEUser() {
-  return "teachometer@gmail.com"; 
-}
-
 function onInstall() {
   onOpen();
 }

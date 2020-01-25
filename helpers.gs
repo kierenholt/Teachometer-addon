@@ -1,5 +1,3 @@
-
-
 function escapeNonAlphaNumeric(str) {
   var code, i, len;
   var ret = "";
@@ -25,82 +23,6 @@ function arrayToHTMLTable(arr) {
   return "<table><tr>"+rows.join("</tr><tr>")+"</tr></table>";
 }
 
-//TO GIVE AME EDIT PERMISSIONS TO CREATE EACH MARK SHEET
-function giveAMEEditPermissions(workbook) {
-    //give write access to workbook to AME
-    var owner = workbook.getOwner().getEmail();
-    var editors = workbook.getEditors().map(function(o) {return o.getEmail();} );
-    var AMEuser = AMEUser();
-    if (owner != AMEuser && editors.indexOf(AMEuser) == -1) {
-      workbook.addEditor(AMEuser);
-    }
-}
-
-//TO GET STUDENT AND SETTINGS DATA FROM 'MARKBOOK' SPREADSHEETS
-//
-function getNamesEmailsScoresSettings() {
-  
-  var sheet = SpreadsheetApp.getActiveSheet();
-  if (sheet == null || sheet.createDeveloperMetadataFinder().withKey("settingsRow").find().length == 0) {
-    Logger.log("not a valid AME markbook");
-    return;
-  }
-  
-  var maxRow = sheet.getMaxRows();
-  //first 4 columns
-  var all = sheet.getRange(2, 1, maxRow-2, 4).getValues();
-  var names = []; var emails = []; var scores = [];
-  var i = 0;
-  while (all[i][0] != "***SETTINGS***") {
-    if (all[i][1] != "") {
-      var index = emails.indexOf(all[i][1]);
-      if (index == -1) { //email not yet seen 
-        names.push(all[i][0]);
-        emails.push(all[i][1]);
-        scores.push(all[i][3]);
-      }
-      else { //email has been seen so compare with recorded score 
-        if (scores[index] < all[i][3]) { //overwrite score
-          scores[index] = all[i][3];
-        }
-      }
-    }
-    i++;
-  }
-  var namesEmailsScores = [];
-  for (var j = 0; j < names.length; j++) {
-    namesEmailsScores.push([names[j],emails[j],scores[j]]);
-  }
-  Logger.log(namesEmailsScores);
-  //settings
-  i++; //skip past the ***SETTINGS*** row
-  var settings = {};
-  while (i < all.length) {
-    if (all[i][0] != "") {
-      settings[all[i][0]] = all[i][1];
-    }
-    i++;
-  }
-  //Logger.log(settings);
-  return [namesEmailsScores, settings];
-}
-
-function getBottomEmptyRowNum() {
-  var sheet = SpreadsheetApp.getActiveSheet();
-  var maxRow = sheet.getMaxRows();
-  var all = sheet.getRange(1, 1, maxRow-1, 1).getValues();
-  var i = 0;
-  while (all[i][0] != "***SETTINGS***") {
-    i++;
-    if (i >= all.length) {
-      throw new Error("***settings*** divider row not found");
-    }
-  }
-  while (all[i][0] != "" && i < all.length) {
-    i++;
-  }
-  return i+1;
-}
 
 //TO GET ROW DATA FROM SCHEMES OF WORK
 //gets the purpose etc. column indexes
@@ -145,7 +67,7 @@ function getSelectedRows() {
       retVal.push(row);
     }
   }
-  
+
   return retVal;
 }
 
