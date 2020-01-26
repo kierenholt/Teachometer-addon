@@ -21,9 +21,11 @@ function showSettings() {
 }
 
 function settingToHTMLElement(settings) { //name: {validation: <>, value: <>}
-  buffer = "";
+  buffer = "<table>"
   for (var name in settings) {
-    buffer += settings[name]["textBeforeElement"] +":";
+    buffer += "<tr>";
+    buffer += "<td>" + settings[name]["textBeforeElement"] +":</td><td>" ;
+    
     if (settings[name]["element"] == ["select"]) {
       buffer += "<select name='"+name+"' onchange='saveSetting(this)'>"
       for (var j = 0; j < settings[name].validation.length; j++) {
@@ -41,8 +43,10 @@ function settingToHTMLElement(settings) { //name: {validation: <>, value: <>}
       if (settings[name].value) { buffer += " checked " }
       buffer += " onclick='saveSetting(this)'/>";
     }
-    buffer += "<br>";
+    
+    buffer += "</td></tr>";
   }
+  buffer += "</table>";
   return HtmlService.createHtmlOutput(buffer).getContent();
 }
 
@@ -61,7 +65,7 @@ function getSettings(names, isTestMode) {
     "outof-enabled":{"value":false,"element":"checkbox","textBeforeElement":"total number of marks (out of)","long description":""},
     
     "shuffle-default":{"value":false,"element":"checkbox","textBeforeElement":"shuffle questions","long description":"randomly shuffle the questions for each student"},
-    "viewers-default":{"value":"everybody","element":"select","validation":["nobody","only those listed above","everybody"],"textBeforeElement":"default viewing permission","long description":"'public' will allow anyone on the web to access the lesson, so long as page permissions are also public. setting this to 'nobody' will prevent access to everyone including those listed above"},
+    "visible-default":{"value":true,"element":"checkbox","textBeforeElement":"visible","long description":"check this box to allow students to access the lesson, uncheck to hide it"},
     "journal-mode-default":{"value":false,"element":"checkbox","textBeforeElement":"journal mode","long description":"add a new row for their scores, every time anyone visits the lesson webpage. If they refresh the page this also starts a new row"},
     "append-default":{"value":false,"element":"checkbox","textBeforeElement":"append mode","long description":"add every student response to the end of a list in each cell rather than overwriting with the most recent response"},
     "remove-hyperlinks-default":{"value":false,"element":"checkbox","textBeforeElement":"remove hyperlinks","long description":"automatically remove all hyperlinks from the lesson webpage. Good for tests"},
@@ -89,7 +93,7 @@ function getSettings(names, isTestMode) {
   if (isTestMode) {
     testModeDefaults = {    
       "shuffle-default":{"value":true},
-      "viewers-default":{"value":"everybody"},
+      "visible-default":{"value":false},
       "journal-mode-default":{"value":false},
       "append-default":{"value":false},
       "remove-hyperlinks-default":{"value":true},

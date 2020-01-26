@@ -12,10 +12,13 @@
     <p>Title: <input type=text id="titleInput"  value="" /> <button id="uploadButton" onclick="uploadToSite()" >UPLOAD</button> 
     <img id="loadingGif" src="https://i.imgur.com/ErfEUeJ.gif" style="height:32px;display:none"/>
     </p>
+    
     <p id="uploadToSiteErrorMessage" style="color:red"></p> 
     <p> <input type="checkbox" id="isTestModeCheckBox"/>Check to enable exam mode. this will shuffle the questions and apply a check limit of 1 </p>
     
   </div>
+  
+  
   <div id="uploadSuccess" hidden>
     <h1>Success!</h1>
     <p>
@@ -29,19 +32,43 @@
     </p>
   </div>
       
+      
+  <p> 
+  
+  <p id="noStudentsErrorMessage" style="color:red" hidden>ACTION REQUIRED: Please add students before your upload</p>
+  <br>
+  <h2>Add Students</h2><button onclick="toggleStudents()" >Show</button>
+  
+  <div id="Students" hidden>
+    <?!= includeTemplate('students'); ?>
+  </div>
+      
   <script>
 
 
-  function onLoad() {
-    var d = new Date();
-    var options = {month: "long", day: "numeric", weekday: "long"};
-    document.getElementById("titleInput").value = d.toLocaleDateString("en-GB",options);
-    }
+function onLoad() {
+  var d = new Date();
+  var options = {month: "long", day: "numeric", weekday: "long"};
+  document.getElementById("titleInput").value = d.toLocaleDateString("en-GB",options);
+  
+  //check if no student
+  if (document.getElementById("studentNamesTextarea").value == "") {
+    document.getElementById("noStudentsErrorMessage").hidden = false;
+  }
+}
     
+function toggleStudents() {
+  document.getElementById("Students").hidden = !(document.getElementById("Students").hidden);
+}
 
 
 function uploadToSite() {
-    
+  
+  if (document.getElementById("studentNamesTextarea").value == "") {
+    document.getElementById("noStudentsErrorMessage").hidden = false;
+    return;
+  }
+
   var uploadDataString = <?=uploadDataString?>; //NO QUOTES!!
   //alert("settingsString: "+settingsString);
   var uploadDataObject = JSON.parse(uploadDataString);

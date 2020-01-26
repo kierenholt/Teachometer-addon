@@ -22,12 +22,18 @@ function showSidebar() {
 function showUploadConfirmation(paramUploadDataString) {
   var dialog = HtmlService.createTemplateFromFile("uploadConfirm.html");
   dialog.uploadDataString = paramUploadDataString;
+  
+  
   var html = dialog.evaluate().setWidth(600).setHeight(400).setTitle("upload"); // The title shows in the sidebar
   SpreadsheetApp.getUi().showModalDialog(html, "upload");
 }
 
 function showMessage(html,title) {  
   SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html), title);
+}
+
+function includeTemplate(filename) {
+  return HtmlService.createTemplateFromFile(filename).evaluate().getContent();
 }
 
 function include(filename) {

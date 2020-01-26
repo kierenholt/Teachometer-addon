@@ -1,0 +1,32 @@
+
+    <h1>Students</h1>
+    <p>These names are automatically added to the markbook. Students must enter these names when they visit the lesson website for the first time. More names can be added once the quiz has been made. </p> 
+    <textarea rows=30 cols=30 id="studentNamesTextarea"><?!= 
+    function() {
+      var userProperties = PropertiesService.getUserProperties();
+      var prefix = SpreadsheetApp.getActiveSpreadsheet().getId();
+      var names = userProperties.getProperty(prefix + "studentNames");
+      return HtmlService.createHtmlOutput(names).getContent(); }();
+    ?></textarea>
+    <button class="blue" onClick='saveStudents();'>Save</button>
+    <span style="color:red" id="saveStudentsErrorMessage"></span>
+    <span style="color:green" id="saveStudentsConfirmation" hidden>Setting Saved</span>
+    
+
+<script>
+
+function saveStudents() {
+  google.script.run
+        .withSuccessHandler(
+          function(students, element) {
+              document.getElementById("saveStudentsConfirmation").hidden = false;
+              document.getElementById("saveStudentsErrorMessage").innerHTML = "";
+          }
+          ).withFailureHandler(
+            function(error) {
+              document.getElementById("saveStudentsErrorMessage").innerHTML = error;
+            }
+          ).saveStudents(document.getElementById("studentNamesTextarea").value);
+}
+
+</script>

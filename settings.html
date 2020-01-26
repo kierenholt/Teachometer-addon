@@ -17,44 +17,35 @@ div#updateWebsiteForm {
   </head>
   <body>
     
-    <h1>Most recently uploaded lesson and Course outline</h1>
+    <h1>Links</h1>
     <p>
     <a href="<?=courseUrl?>" target="_blank">Course outline (links to previous lessons)</a>
     <br>
-    <a href="<?=lessonUrl?>" target="_blank">Most recently uploaded lesson: <?=lessonName?></a>
-    
+    <a href="<?=lessonUrl?>" target="_blank">Most recently uploaded lesson: <?=lessonName?></a>    
+    <br>
+    <a id="markbookUrlLink" href="<?= markbookUrl ?>" target="_blank">
+      Google workbook <span  id="markbookNameSpan">Markbook: <?= markbookName ?></span>
+    </a>
     </p>
     
     <h1>When I click Print</h1>
     <?!= settingToHTMLElement(getSettings(["print-show-solutions","print-jumbled-solutions","print-show-titles","print-every-question-new-page"],false)) ?>
-
-    
-    <h1>Markbook</h1>
-    <p>When a new quiz is created, a new marksheet for that quiz will be automatically generated and added to...</p> 
-    <a id="markbookUrlLink" href="<?= markbookUrl ?>" target="_blank">
-      <p>Google workbook <span  id="markbookNameSpan"><?= markbookName ?></span></p>
-    </a>
     
     
-    <h1>Marksheet score columns</h1>
+    <h1>Markbook score columns</h1>
     <p>These are score columns that will be used in the marking sheet when the quiz is first made. More columns can also be created after the quiz is made.<br>
     <?!= settingToHTMLElement(getSettings(["correct-%-enabled","attempted-%-enabled","stars-%-enabled",
           "correct-enabled","attempted-enabled","stars-enabled","outof-enabled"],false)) ?>
     <br>
     </p>
     
-    <h1>Marksheet default settings</h1>
+    <h1>Markbook default settings</h1>
     <p>These are the default settings to be used when a quiz is first made. They can also be changed after the quiz is made.<br>
-    <?!= settingToHTMLElement(getSettings(["shuffle-default","viewers-default","journal-mode-default",
+    <?!= settingToHTMLElement(getSettings(["shuffle-default","visible-default","journal-mode-default",
     "append-default","remove-hyperlinks-default","mark-limit-default","checks-limit-default","time-limit-default"],false)) ?>
     </p>    
     
-    <h1>Students</h1>
-    <p>These names are automatically added to the markbook. Students must enter these names when they visit the lesson website for the first time. More names can be added once the quiz has been made. </p> 
-    <textarea rows=30 cols=12 id="studentNamesTextarea"><?= studentNames ?></textarea>
-    <button class="blue" onClick='saveStudents();'>Save</button>
-    <span style="color:red" id="saveStudentsErrorMessage"></span>
-    <span style="color:green" id="saveStudentsConfirmation" hidden>Setting Saved</span>
+    <?!= includeTemplate('students'); ?>
         
   
     
@@ -62,7 +53,6 @@ div#updateWebsiteForm {
     <button class="blue" onClick='resetAllSettings();'>Click to wipe all settings</button>
   
 <script>
-
 
 function resetAllSettings() {
       google.script.run
@@ -96,41 +86,6 @@ function saveSetting(inputElement) {
           }
         ).saveSettings(toSave);
 }
-
-function saveStudents() {
-  google.script.run
-        .withSuccessHandler(
-          function(students, element) {
-              document.getElementById("saveStudentsConfirmation").hidden = false;
-              document.getElementById("saveStudentsErrorMessage").innerHTML = "";
-          }
-          ).withFailureHandler(
-            function(error) {
-              document.getElementById("saveStudentsErrorMessage").innerHTML = error;
-            }
-          ).saveStudents(document.getElementById("studentNamesTextarea").value);
-}
-    
-/*
-function generateMarkbook() {
-  document.getElementById("loadingGif").style.display = "inline";
-  google.script.run
-        .withSuccessHandler(
-          function(ret, element) {
-            //alert(JSON.stringify(ret));
-            document.getElementById("loadingGif").style.display = "none";
-            document.getElementById("markbookUrlLink").href= ret["markbookUrl"];
-            document.getElementById("markbookNameSpan").innerHTML = ret["markbookName"];
-          }
-          ).withFailureHandler(
-            function(error) {
-              //alert(JSON.stringify(error));
-              document.getElementById("generateMarkbookErrorMessage").innerHTML = error;
-              document.getElementById("loadingGif").style.display = "none";
-            }
-          ).generateMarkbook();
-}
-*/
 
 </script>
 

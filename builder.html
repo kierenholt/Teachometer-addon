@@ -309,7 +309,7 @@ function Slideshow() {
 function showUploadConfirmation() {
 
   if (window.assignment.rows.length == 0) {
-    google.script.run.showMessage("<h2>You cannot upload an empty lesson>/h2><p>Your lesson contains no content e.g. notes or questions. <br> To fix this: <ul><li>Select rows from the Google Sheet <li>  Click the + icon to add markdown into the lesson.</ul></p>","cannot upload empty lesson");
+    google.script.run.showMessage("<p>You cannot upload an empty lesson<br>Your lesson contains no content e.g. notes or questions. <br> To fix this: <ul><li>Select rows from the Google Sheet <li>  Click the + icon to add markdown into the lesson.</ul></p>","cannot upload empty lesson");
     return;
   }
   var uploadData = {};

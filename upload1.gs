@@ -10,7 +10,7 @@ function upload(uploadDataObject) {
   uploadDataObject.sowName = SpreadsheetApp.getActiveSpreadsheet().getName();
   uploadDataObject.teacherId = getTeacherId();
   uploadDataObject.studentNames = userProperties.getProperty(prefix + "studentNames");
-  uploadDataObject.markbookSettings = getSettings(["shuffle-default","viewers-default","journal-mode-default",
+  uploadDataObject.markbookSettings = getSettings(["shuffle-default","visible-default","journal-mode-default",
                                       "append-default","remove-hyperlinks-default","mark-limit-default",
                                       "checks-limit-default","time-limit-default"],uploadDataObject.isTestMode);
   uploadDataObject.scoreSettings = getSettings(["correct-%-enabled","attempted-%-enabled","stars-%-enabled",
