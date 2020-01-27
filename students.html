@@ -6,6 +6,7 @@
       var userProperties = PropertiesService.getUserProperties();
       var prefix = SpreadsheetApp.getActiveSpreadsheet().getId();
       var names = userProperties.getProperty(prefix + "studentNames");
+      if (names == null) { names = ""; }
       return HtmlService.createHtmlOutput(names).getContent(); }();
     ?></textarea>
     <button class="blue" onClick='saveStudents();'>Save</button>
