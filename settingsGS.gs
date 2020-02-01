@@ -69,12 +69,12 @@ function getSettings(names, isTestMode) {
     
     "shuffle-default":{"value":false,"element":"checkbox","textBeforeElement":"shuffle questions","long description":"randomly shuffle the questions for each student"},
     "visible-default":{"value":true,"element":"checkbox","textBeforeElement":"visible","long description":"check this box to allow students to access the lesson, uncheck to hide it"},
-    "journal-mode-default":{"value":false,"element":"checkbox","textBeforeElement":"journal mode","long description":"add a new row for their scores, every time anyone visits the lesson webpage. If they refresh the page this also starts a new row"},
-    "append-default":{"value":false,"element":"checkbox","textBeforeElement":"append mode","long description":"add every student response to the end of a list in each cell rather than overwriting with the most recent response"},
-    "remove-hyperlinks-default":{"value":false,"element":"checkbox","textBeforeElement":"remove hyperlinks","long description":"automatically remove all hyperlinks from the lesson webpage. Good for tests"},
-    "mark-limit-default":{"value":-1,"element":"input","textBeforeElement":"mark limit","long description":"truncate the lesson to that number of marks. Good for tests"},
-    "checks-limit-default":{"value":-1,"element":"input","textBeforeElement":"checks limit","long description":"a positive number will limit the number of checks students can make, when zero checks remain, the quiz will deactivate"},
-    "time-limit-default":{"value":-1,"element":"input","textBeforeElement":"time limit","long description":"a positive number will activate a time limit when students begin the lesson"},
+    "journal-mode-default":{"value":false,"element":"checkbox","textBeforeElement":"journal mode","long description":"Every time a student visits the lesson page, a new row is added in the markbook for their responses. If they refresh the page this also starts a new row"},
+    "append-default":{"value":false,"element":"checkbox","textBeforeElement":"append mode","long description":"add student responses to the end of a list in each cell rather than overwriting the cell contents each time"},
+    "remove-hyperlinks-default":{"value":false,"element":"checkbox","textBeforeElement":"remove hyperlinks","long description":"remove all hyperlinks from the lesson webpage. Good for tests"},
+    "mark-limit-default":{"value":-1,"element":"input","textBeforeElement":"mark limit","long description":"truncate questions to add up to the specified number of marks. Good for tests. set to -1 to disable this option."},
+    "checks-limit-default":{"value":-1,"element":"input","textBeforeElement":"checks limit","long description":"limit the number of checks each student can make, when zero checks remain, the quiz will deactivate. set to -1 to disable this option."},
+    "time-limit-default":{"value":-1,"element":"input","textBeforeElement":"time limit","long description":"a time limit will activate when students load the lesson page. set to -1 to disable this option."},
     
     "print-show-solutions":{"value":true,"element":"checkbox","textBeforeElement":"show solutions","long description":""},
     "print-jumbled-solutions":{"value":false,"element":"checkbox","textBeforeElement":"show jumbled solutions","long description":""},
@@ -100,9 +100,9 @@ function getSettings(names, isTestMode) {
       "journal-mode-default":{"value":false},
       "append-default":{"value":false},
       "remove-hyperlinks-default":{"value":true},
-      "mark-limit-default":{"value":100},
+      "mark-limit-default":{"value":40},
       "checks-limit-default":{"value":1},
-      "time-limit-default":{"value":-1}
+      "time-limit-default":{"value":30}
     };
     for (var key in testModeDefaults) {
       if (key in ret) {
