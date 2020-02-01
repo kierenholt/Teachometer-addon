@@ -22,7 +22,7 @@ function showSidebar() {
 function showUploadConfirmation(paramUploadDataString) {
   var dialog = HtmlService.createTemplateFromFile("uploadConfirm.html");
   dialog.uploadDataString = paramUploadDataString;
-  
+  dialog.teacherId = getTeacherId();
   
   var html = dialog.evaluate().setWidth(600).setHeight(400).setTitle("upload"); // The title shows in the sidebar
   SpreadsheetApp.getUi().showModalDialog(html, "upload");

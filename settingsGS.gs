@@ -39,11 +39,14 @@ function settingToHTMLElement(settings) { //name: {validation: <>, value: <>}
       buffer += "<input type='text' style='width:5em' name='"+name+"' value='"+settings[name].value+"' onblur='saveSetting(this)'/>"; 
     }
     if (settings[name]["element"] == ["checkbox"]) {
-      buffer += "<input type='checkbox' name='"+name+"'";
+        buffer += "<input type='checkbox' name='"+name+"'";
       if (settings[name].value) { buffer += " checked " }
-      buffer += " onclick='saveSetting(this)'/>";
+        buffer += " onclick='saveSetting(this)'/>";
     }
     
+    if (settings[name]["long description"]) {
+      buffer += "<img src='http://www.teachometer.co.uk/help16x16.png' title='" + settings[name]["long description"] + "'/>";
+    }
     buffer += "</td></tr>";
   }
   buffer += "</table>";
@@ -56,13 +59,13 @@ function getSettings(names, isTestMode) {
   var ret = {};
   defaultValues = {
     
-    "correct-%-enabled":{"value":true,"element":"checkbox","textBeforeElement":"% correct","long description":""},
-    "attempted-%-enabled":{"value":false,"element":"checkbox","textBeforeElement":"% attempted","long description":""},
-    "stars-%-enabled":{"value":false,"element":"checkbox","textBeforeElement":"% stars","long description":""},
-    "correct-enabled":{"value":true,"element":"checkbox","textBeforeElement":"number of correct","long description":""},
-    "attempted-enabled":{"value":false,"element":"checkbox","textBeforeElement":"number of attempted","long description":""},
-    "stars-enabled":{"value":false,"element":"checkbox","textBeforeElement":"number of stars","long description":""},
-    "outof-enabled":{"value":false,"element":"checkbox","textBeforeElement":"total number of marks (out of)","long description":""},
+    "correct-%-enabled":{"value":true,"element":"checkbox","textBeforeElement":"% Correct","long description":""},
+    "attempted-%-enabled":{"value":false,"element":"checkbox","textBeforeElement":"% Attempted","long description":""},
+    "stars-%-enabled":{"value":false,"element":"checkbox","textBeforeElement":"% Stars","long description":""},
+    "correct-enabled":{"value":true,"element":"checkbox","textBeforeElement":"Correct","long description":""},
+    "attempted-enabled":{"value":false,"element":"checkbox","textBeforeElement":"Attempted","long description":""},
+    "stars-enabled":{"value":false,"element":"checkbox","textBeforeElement":"Stars","long description":""},
+    "outof-enabled":{"value":false,"element":"checkbox","textBeforeElement":"Out of","long description":""},
     
     "shuffle-default":{"value":false,"element":"checkbox","textBeforeElement":"shuffle questions","long description":"randomly shuffle the questions for each student"},
     "visible-default":{"value":true,"element":"checkbox","textBeforeElement":"visible","long description":"check this box to allow students to access the lesson, uncheck to hide it"},

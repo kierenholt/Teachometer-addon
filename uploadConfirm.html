@@ -1,46 +1,87 @@
 <!DOCTYPE html>
 <html>
   <head>
+  
+    <style>
+    
+h2 {
+    background-color: #363647;
+    color: #eee;
+    padding: 20px;
+}
+
+p {
+	padding: 0 20px;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+}
+
+img {
+  padding: 0px 10px 0px 10px;
+}
+
+button {
+	
+    background-color: #ff9900;
+    color: #eee;
+    padding: 10px;
+    border-radius: 10px;
+    color: #000;
+}
+div {
+  clear: both;
+}
+
+    </style>
     <base target="_top">
     
   </head>
   <body onload="onLoad()">
   
   <div id="enterNameTopicDiv">
-    <h2>Enter the title of the lesson (e.g. Conservation of energy) or the date</h2> 
+    <h2>Enter the title of the lesson</h2>
     
-    <p>Title: <input type=text id="titleInput"  value="" /> <button id="uploadButton" onclick="uploadToSite()" >UPLOAD</button> 
-    <img id="loadingGif" src="https://i.imgur.com/ErfEUeJ.gif" style="height:32px;display:none"/>
-    </p>
+    <p>Title: <input type=text id="titleInput"  value="" /> <img src="http://www.teachometer.co.uk/help16x16.png" title="e.g. Conservation of energy, or the date"/>
+    <br><br>
+    
+    
+    <input type="checkbox" id="isTestModeCheckBox"/>Enable test mode<img src="http://www.teachometer.co.uk/help16x16.png" title="Check to enable exam mode. this will shuffle the questions and apply a check limit of 1 "/>
+    <br><br>
+    <div style="text-align:center">
+      <button id="uploadButton" onclick="uploadToSite()" >UPLOAD</button>
+      <img id="loadingGif" src="https://i.imgur.com/ErfEUeJ.gif" style="height:32px;display:none"/>
+    </div>
     
     <p id="uploadToSiteErrorMessage" style="color:red"></p> 
-    <p> <input type="checkbox" id="isTestModeCheckBox"/>Check to enable exam mode. this will shuffle the questions and apply a check limit of 1 </p>
     
   </div>
   
   
-  <div id="uploadSuccess" hidden>
-    <h1>Success!</h1>
+  <div id="uploadSuccessDiv" hidden>
+    <h2>Success!</h2>
     <p>
-    The marksheet for your new lesson is <a id="uploadedMarksheetLink" href="" target="_blank">here</a>
+    The marksheet for your new lesson is <a id="uploadedMarksheetLink" href="" target="_blank">here</a><img src="http://www.teachometer.co.uk/help16x16.png" title="For your eyes only. This shows you the marks of your students in real time."/>
     <br><br>
-    The lesson page is <a id="lessonUrlLink" href="" target="_blank">here</a>
+    The lesson page is <a id="lessonUrlLink" href="" target="_blank">here</a><img src="http://www.teachometer.co.uk/help16x16.png" title="Copy this link and email it to your students or post it to Google classroom"/>
     <input type="text" value="" id="lessonUrlInput" style="width:1px; border: none"/>&nbsp;<button onclick="copyText('lessonUrlInput')">Copy Lesson Link</button> 
     <br><br>
-    The course page is <a id="courseUrlLink" href="" target="_blank">here</a> 
+    The course page is <a id="courseUrlLink" href="" target="_blank">here</a> <img src="http://www.teachometer.co.uk/help16x16.png" title="This page contains a list of all of the lessons you have uploaded. Tell students to bookmark this page."/>
     <input type="text" value="" id="courseUrlInput" style="width:1px; border: none"/>&nbsp;<button onclick="copyText('courseUrlInput')">Copy Course Link</button> 
     </p>
   </div>
       
-      
-  <p> 
+  <div id="studentDiv">
   
-  <p id="noStudentsErrorMessage" style="color:red" hidden>ACTION REQUIRED: Please add students before your upload</p>
-  <br>
-  <h2>Add Students</h2><button onclick="toggleStudents()" >Show</button>
-  
-  <div id="Students" hidden>
-    <?!= includeTemplate('students'); ?>
+    <p id="noStudentsErrorMessage" style="color:red" hidden>ACTION REQUIRED: Please add students before your upload</p>
+    <br>
+    <p><button onclick="toggleStudents()" >Show students</button></p>
+    
+    <div id="Students" hidden>
+      <?!= includeTemplate('students'); ?>
+    </div>
   </div>
       
   <script>
@@ -70,14 +111,15 @@ function uploadToSite() {
   }
 
   var uploadDataString = <?=uploadDataString?>; //NO QUOTES!!
-  //alert("settingsString: "+settingsString);
+  
   var uploadDataObject = JSON.parse(uploadDataString);
-    //alert(JSON.stringify(uploadDataObject));
+  
   
   if (document.getElementById("titleInput").value) {
   
     uploadDataObject["name"] = document.getElementById("titleInput").value; //name
     uploadDataObject["isTestMode"] = document.getElementById("isTestModeCheckBox").checked; //isTestMode
+    uploadDataObject["teacherId"] = <?=teacherId?>;
     document.getElementById("loadingGif").style.display = "inline";
         
     google.script.run
@@ -87,8 +129,10 @@ function uploadToSite() {
                   document.getElementById("uploadToSiteErrorMessage").innerHTML = "";
                   document.getElementById("loadingGif").style.display = "none";
                   
+                  document.getElementById("enterNameTopicDiv").hidden = true;
+                  document.getElementById("studentDiv").hidden = true;
                   
-                  document.getElementById("uploadSuccess").hidden = false;
+                  document.getElementById("uploadSuccessDiv").hidden = false;
                   document.getElementById("uploadedMarksheetLink").href = ret["marksheetUrl"];
                   
                   document.getElementById("lessonUrlLink").href = ret["lessonUrl"];
@@ -97,6 +141,11 @@ function uploadToSite() {
                   document.getElementById("courseUrlLink").href = ret["courseUrl"];
                   document.getElementById("courseUrlInput").value = ret["courseUrl"];
                   
+                  //set cookie for teacher
+                  var img = document.createElement('img'); 
+                  img.src = "https://teachometer.co.uk/set-cookie.php?" + <?=teacherId?>; 
+                  img.style.display = "none";
+                  document.body.appendChild(img); 
                 }
               }
             ).withFailureHandler(

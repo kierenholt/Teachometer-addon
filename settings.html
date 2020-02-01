@@ -6,40 +6,66 @@
 
       #studentNamesTextarea {white-space: nowrap;  overflow: auto;}
       
-div#createWebsiteForm {
-  background-color: lightgrey;
+
+h2 {
+    background-color: #363647;
+    color: #eee;
+    padding: 20px;
 }
-div#updateWebsiteForm {
-  background-color: lightblue;
+
+p {
+	padding: 0 20px;
 }
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+}
+
+img {
+  padding: 0px 10px 0px 10px;
+}
+
+button {
+	
+    background-color: #ff9900;
+    color: #eee;
+    padding: 10px;
+    border-radius: 10px;
+    color: #000;
+}
+div {
+  clear: both;
+}
+
   </style>
     
   </head>
   <body>
     
-    <h1>Links</h1>
+    <h2>Links</h2>
     <p>
-    <a href="<?=courseUrl?>" target="_blank">Course outline (links to previous lessons)</a>
-    <br>
-    <a href="<?=lessonUrl?>" target="_blank">Most recently uploaded lesson: <?=lessonName?></a>    
-    <br>
+    <a href="<?=courseUrl?>" target="_blank">Course outline</a><img src="http://www.teachometer.co.uk/help16x16.png" title="This page contains a list of all of the lessons you have uploaded. Tell students to bookmark this page."/>
+    <br><br>
+    <a href="<?=lessonUrl?>" target="_blank">Most recently uploaded lesson: <?=lessonName?></a><img src="http://www.teachometer.co.uk/help16x16.png" title="Copy this link and email it to your students or post it to Google classroom"/>  
+    <br><br>
     <a id="markbookUrlLink" href="<?= markbookUrl ?>" target="_blank">
-      Google workbook <span  id="markbookNameSpan">Markbook: <?= markbookName ?></span>
+      Markbook: <span id="markbookNameSpan"><?= markbookName ?></span><img src="http://www.teachometer.co.uk/help16x16.png" title="For your eyes only. This shows you the marks of your students in real time."/>
     </a>
     </p>
     
-    <h1>When I click Print</h1>
+    <h2>When I click Print</h2>
     <?!= settingToHTMLElement(getSettings(["print-show-solutions","print-jumbled-solutions","print-show-titles","print-every-question-new-page"],false)) ?>
     
     
-    <h1>Markbook score columns</h1>
+    <h2>Markbook score columns</h2>
     <p>These are score columns that will be used in the marking sheet when the quiz is first made. More columns can also be created after the quiz is made.<br>
     <?!= settingToHTMLElement(getSettings(["correct-%-enabled","attempted-%-enabled","stars-%-enabled",
           "correct-enabled","attempted-enabled","stars-enabled","outof-enabled"],false)) ?>
     <br>
     </p>
     
-    <h1>Markbook default settings</h1>
+    <h2>Markbook default settings</h2>
     <p>These are the default settings to be used when a quiz is first made. They can also be changed after the quiz is made.<br>
     <?!= settingToHTMLElement(getSettings(["shuffle-default","visible-default","journal-mode-default",
     "append-default","remove-hyperlinks-default","mark-limit-default","checks-limit-default","time-limit-default"],false)) ?>
@@ -49,7 +75,7 @@ div#updateWebsiteForm {
         
   
     
-    <h1>Reset All</h1>
+    <h2>Reset All</h2>
     <button class="blue" onClick='resetAllSettings();'>Click to wipe all settings</button>
   
 <script>
