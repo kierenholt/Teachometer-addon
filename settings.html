@@ -54,9 +54,6 @@ div {
     </a>
     </p>
     
-    <h2>When I click Print</h2>
-    <?!= settingToHTMLElement(getSettings(["print-show-solutions","print-jumbled-solutions","print-show-titles","print-every-question-new-page"],false)) ?>
-    
     
     <h2>Markbook score columns</h2>
     <p>These are score columns that will be used in the marking sheet when the quiz is first made. More columns can also be created after the quiz is made.<br>
@@ -74,6 +71,9 @@ div {
     <?!= includeTemplate('students'); ?>
         
   
+    <h2>When I click Print</h2>
+    <?!= settingToHTMLElement(getSettings(["print-show-solutions","print-jumbled-solutions","print-show-titles","print-every-question-new-page"],false)) ?>
+    
     
     <h2>Reset All</h2>
     <button class="blue" onClick='resetAllSettings();'>Click to wipe all settings</button>

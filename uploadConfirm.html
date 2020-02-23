@@ -70,6 +70,9 @@ div {
     <br><br>
     The course page is <a id="courseUrlLink" href="" target="_blank">here</a> <img src="http://www.teachometer.co.uk/help16x16.png" title="This page contains a list of all of the lessons you have uploaded. Tell students to bookmark this page."/>
     <input type="text" value="" id="courseUrlInput" style="width:1px; border: none"/>&nbsp;<button onclick="copyText('courseUrlInput')">Copy Course Link</button> 
+    <br><br>
+    The presentation page is <a id="presentUrlLink" href="" target="_blank">here</a> <img src="http://www.teachometer.co.uk/help16x16.png" title="This page shows the lesson as a presentation. A link to this page is also included in the marksheet."/>
+    <input type="text" value="" id="presentUrlInput" style="width:1px; border: none"/>&nbsp;<button onclick="copyText('courseUrlInput')">Copy Present Link</button> 
     </p>
   </div>
       
@@ -140,6 +143,9 @@ function uploadToSite() {
                   
                   document.getElementById("courseUrlLink").href = ret["courseUrl"];
                   document.getElementById("courseUrlInput").value = ret["courseUrl"];
+                  
+                  document.getElementById("presentUrlLink").href = ret["presentUrl"];
+                  document.getElementById("presentUrlInput").value = ret["presentUrl"];
                   
                   //set cookie for teacher
                   var img = document.createElement('img'); 

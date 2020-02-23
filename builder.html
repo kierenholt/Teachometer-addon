@@ -3,9 +3,17 @@
   <head> 
     <base target="_top">
     <?!= include('style'); ?>
+    
+    <style id="print-show-titles">
+    <!--- altered with javascript --->
+    </style>
+    
+    
+    <style id="print-every-question-new-page">
+    <!--- altered with javascript --->
+    </style>
+    
     <style>
-    
-    
 @media print {
   body {
     font-size: medium;
@@ -16,8 +24,8 @@
     margin-top: 0px;
   }
   .hideOnPrint {
-    visibility:hidden;
-    display: none;
+    visibility:hidden; !important
+    display: none; !important
   }
 }
 
@@ -33,13 +41,13 @@
   div#scrolling {
     padding-top: 70px;
   }
-}
-
-
-.hideAlways {
+  .hideOnScreen {
     visibility:hidden;
     display: none;
     }
+}
+
+
 
 
 div.pageBreakBefore {
@@ -205,15 +213,16 @@ window.onclick = function(event) {
       <li>Direct students to the webpage and watch their marks pop up in the marksheet as they answer your questions 
       </ol>
       </div>
-      
-	  <div id="jumbledSolutionsDivContainer" class="hideAlways">
-		<h1>Jumbled solutions</h1>
-		<div id="jumbledSolutionsDiv"></div>
-	  </div>
     
       <div id="solutionsDiv" class="builder pageBreakBefore">
             <h1>Solutions</h1>
       </div>
+      
+      
+	  <div id="jumbledSolutionsDivContainer" class="hideOnScreen">
+		<h1>Jumbled solutions</h1>
+		<div id="jumbledSolutionsDiv"></div>
+	  </div>
     </div>
 
 
@@ -250,9 +259,50 @@ function showSettings() {
 }
 
 function printQuiz() {
-  window.print();
-  window.assignment.refresh(); //REFRESH AFTER PRINT SO THAT IMAGES CAN LOAD IN TIME
-  //GET PRINT SETTINGS FROM API
+  //get settings for script 
+  
+    google.script.run
+          .withSuccessHandler(
+            function(printSettings, element) { 
+            
+              if ("print-show-solutions" in printSettings && printSettings["print-show-solutions"]["value"] == true) {
+                document.getElementById("solutionsDiv").classList.remove("hideOnPrint");
+              }
+              else {
+                document.getElementById("solutionsDiv").classList.add("hideOnPrint");
+              }
+              
+              if ("print-jumbled-solutions" in printSettings && printSettings["print-jumbled-solutions"]["value"] == true) {
+                document.getElementById("jumbledSolutionsDivContainer").classList.remove("hideOnPrint");
+              }
+              else {
+                document.getElementById("jumbledSolutionsDivContainer").classList.add("hideOnPrint");
+              }
+              
+              if ("print-show-titles" in printSettings && printSettings["print-show-titles"]["value"] == true) {
+                document.getElementById("print-show-titles").innerText = "";
+              }
+              else {
+                document.getElementById("print-show-titles").innerText = "div.title { visibility: hidden; display: none; }";
+              }
+              
+              if ("print-every-question-new-page" in printSettings && printSettings["print-every-question-new-page"]["value"] == true) {
+                document.getElementById("print-every-question-new-page").innerText = "div.outer { page-break-before: always; }";
+              }
+              else {
+                document.getElementById("print-every-question-new-page").innerText = "";
+              }
+              
+              window.print();
+              window.assignment.refresh(); //REFRESH AFTER PRINT SO THAT IMAGES CAN LOAD IN TIME
+  
+            }
+          ).withFailureHandler(
+            function(error) {
+              //google.script.run.showMessage("<p>"+error+"</p>","error");
+            }
+          ).getSettings(["print-show-solutions","print-jumbled-solutions","print-show-titles","print-every-question-new-page"]);
+          
 }
 
 function preview() {
