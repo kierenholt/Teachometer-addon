@@ -8,7 +8,6 @@ function upload(uploadDataObject) {
 
   uploadDataObject.sowId = prefix;
   uploadDataObject.sowName = SpreadsheetApp.getActiveSpreadsheet().getName();
-  uploadDataObject.studentNames = userProperties.getProperty(prefix + "studentNames");
   uploadDataObject.markbookSettings = getSettings(["shuffle-default","visible-default","journal-mode-default",
                                       "append-default","remove-hyperlinks-default","mark-limit-default",
                                       "checks-limit-default","time-limit-default"],uploadDataObject.isTestMode);

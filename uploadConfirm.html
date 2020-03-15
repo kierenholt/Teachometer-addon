@@ -120,6 +120,10 @@ function uploadToSite() {
   
   if (document.getElementById("titleInput").value) {
   
+  
+  uploadDataObject.studentNames = document.getElementById("studentNamesTextarea").value; //DO NOT MOVE THIS TO THE UPLOAD GS FUNCTION
+  //BECAUSE THE USERPROPERTIES TAKES TIME TO UPDATE
+  
     uploadDataObject["name"] = document.getElementById("titleInput").value; //name
     uploadDataObject["isTestMode"] = document.getElementById("isTestModeCheckBox").checked; //isTestMode
     uploadDataObject["teacherId"] = <?=teacherId?>;
